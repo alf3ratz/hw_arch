@@ -1,0 +1,133 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Student Service API",
+    "description": "API для поиска студентов",
+    "version": "1.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/jsonrpc": {
+      "post": {
+        "summary": "Поиск студентов",
+        "description": "Метод для поиска студентов по различным критериям",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchStudents"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StudentResult"
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка в параметрах"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SearchStudents": {
+      "type": "object",
+      "properties": {
+        "fio": {
+          "type": "string",
+          "description": "ФИО студента"
+        },
+        "age": {
+          "type": "integer",
+          "description": "Возраст студента"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Пол студента"
+        },
+        "lecture_presence": {
+          "type": "boolean",
+          "description": "Присутствие на лекции (True/False)"
+        },
+        "lecture_name": {
+          "type": "string",
+          "description": "Название лекции"
+        },
+        "total_attendance": {
+          "type": "integer",
+          "description": "Общее количество посещенных лекций"
+        },
+        "avg_grade": {
+          "type": "number",
+          "description": "Средний балл студента"
+        },
+        "sort_by": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": "Сортировка по полям (например, [['age', 'asc']])"
+        },
+        "page": {
+          "type": "integer",
+          "default": 1,
+          "description": "Номер страницы"
+        },
+        "per_page": {
+          "type": "integer",
+          "default": 10,
+          "description": "Количество записей на странице"
+        }
+      }
+    },
+    "StudentResult": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "ID студента"
+        },
+        "fio": {
+          "type": "string",
+          "description": "ФИО студента"
+        },
+        "age": {
+          "type": "integer",
+          "description": "Возраст студента"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Пол студента"
+        },
+        "attendance": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "description": "Карта присутствия на лекциях"
+        },
+        "grades": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "Баллы по всем дисциплинам"
+        }
+      }
+    }
+  }
+}
